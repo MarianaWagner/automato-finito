@@ -21,9 +21,11 @@
     - Com Passar, transita para Alerta.
 
 !!! Note "Do estado *Destravada*"
+    
     - Com Passar, transita para Travada.
     - Com Pagamento, permanece em Destravada.
 
 !!! Note "Do estado *Alerta*"
+    
     - Com Reset, transita para Travada.
     - Com Pagamento ou Passar, permanece em Alerta.
