@@ -1,22 +1,77 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Simulador de Catraca de Ônibus</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autômato de Catraca</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+        }
+        .state-display {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        .actions button {
+            padding: 10px 20px;
+            margin: 10px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
-        <h1>Simulador de Catraca de Ônibus</h1>
-        <h2 id="state">Estado Atual: {{ state }}</h2>
-        <div class="buttons">
+        <h1>Autômato de Catraca</h1>
+        <div class="state-display">
+            Estado Atual: <span id="current-state">{{ state }}</span>
+        </div>
+        <div class="actions">
             <button onclick="sendAction('Pagamento')">Pagamento</button>
             <button onclick="sendAction('Passar')">Passar</button>
             <button onclick="sendAction('Reset')">Reset</button>
+            <button onclick="simulate()">Simular</button>
         </div>
-        <button class="simulate" onclick="simulatePassenger()">Simular Passageiro</button>
-        <div id="message"></div>
+        <div id="message" style="margin-top: 20px; font-size: 18px; color: #555;"></div>
     </div>
-    <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+
+    <script>
+        async function sendAction(action) {
+            try {
+                const response = await fetch('/action', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action })
+                });
+                const result = await response.json();
+                updateUI(result.state, result.message);
+            } catch (error) {
+                console.error('Erro ao enviar ação:', error);
+            }
+        }
+
+        async function simulate() {
+            try {
+                const response = await fetch('/simulate', {
+                    method: 'POST'
+                });
+                const result = await response.json();
+                updateUI(result.state, `Ação simulada: ${result.action} - ${result.message}`);
+            } catch (error) {
+                console.error('Erro na simulação:', error);
+            }
+        }
+
+        function updateUI(state, message) {
+            document.getElementById('current-state').textContent = state;
+            document.getElementById('message').textContent = message;
+        }
+    </script>
 </body>
 </html>
