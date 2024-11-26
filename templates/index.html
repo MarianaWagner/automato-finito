@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Simulador de Catraca de Ônibus</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Simulador de Catraca de Ônibus</h1>
+        <h2 id="state">Estado Atual: {{ state }}</h2>
+        <div class="buttons">
+            <button onclick="sendAction('Pagamento')">Pagamento</button>
+            <button onclick="sendAction('Passar')">Passar</button>
+            <button onclick="sendAction('Reset')">Reset</button>
+        </div>
+        <button class="simulate" onclick="simulatePassenger()">Simular Passageiro</button>
+        <div id="message"></div>
+    </div>
+    <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+</body>
+</html>
